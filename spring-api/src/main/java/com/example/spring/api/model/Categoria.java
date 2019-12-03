@@ -1,6 +1,7 @@
 package com.example.spring.api.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -9,23 +10,11 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "categoria")
-public class Categoria {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codigo;
+public class Categoria extends Entidade {
 
     @NotNull
     @Size(min = 3, max = 50)
     private String nome;
-
-    public Long getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
-    }
 
     public String getNome() {
         return nome;
@@ -44,11 +33,11 @@ public class Categoria {
 
         Categoria categoria = (Categoria) o;
 
-        return codigo.equals(categoria.codigo);
+        return this.codigo.equals(categoria.codigo);
     }
 
     @Override
     public int hashCode() {
-        return codigo.hashCode();
+        return this.codigo.hashCode();
     }
 }

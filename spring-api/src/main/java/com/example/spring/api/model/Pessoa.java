@@ -2,7 +2,10 @@ package com.example.spring.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -11,11 +14,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "pessoa")
-public class Pessoa {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codigo;
+public class Pessoa extends Entidade {
 
     @NotNull
     @Size(min = 3, max = 50)
@@ -25,14 +24,6 @@ public class Pessoa {
     private Endereco endereco;
 
     private Boolean ativo;
-
-    public Long getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
-    }
 
     public String getNome() {
         return nome;

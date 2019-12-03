@@ -7,11 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "lancamento")
-public class Lancamento {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codigo;
+public class Lancamento extends Entidade {
 
     @NotNull
     private String descricao;
@@ -41,14 +37,6 @@ public class Lancamento {
     @ManyToOne
     @JoinColumn(name = "codigo_pessoa")
     private Pessoa pessoa;
-
-    public Long getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
-    }
 
     public String getDescricao() {
         return descricao;
