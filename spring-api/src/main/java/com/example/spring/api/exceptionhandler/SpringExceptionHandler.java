@@ -1,5 +1,6 @@
 package com.example.spring.api.exceptionhandler;
 
+import com.example.spring.api.service.exception.PessoaInexistenteOuInativaException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -30,8 +31,12 @@ import java.util.Objects;
 @ControllerAdvice
 public class SpringExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private final MessageSource messageSource;
+
     @Autowired
-    private MessageSource messageSource;
+    public SpringExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status,
@@ -65,6 +70,14 @@ public class SpringExceptionHandler extends ResponseEntityExceptionHandler {
         String mensagemDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
         List<Erro> erros = Collections.singletonList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
         return super.handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({PessoaInexistenteOuInativaException.class})
+    public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(PessoaInexistenteOuInativaException ex) {
+        String mensagemUsuario = messageSource.getMessage("pessoa.inexistente-ou-inativa", null, LocaleContextHolder.getLocale());
+        String mensagemDesenvolvedor = ex.toString();
+        List<SpringExceptionHandler.Erro> erros = Collections.singletonList(new SpringExceptionHandler.Erro(mensagemUsuario, mensagemDesenvolvedor));
+        return ResponseEntity.badRequest().body(erros);
     }
 
     private List<Erro> criarListaDeErros(BindingResult bindingResult) {
